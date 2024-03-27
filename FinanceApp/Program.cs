@@ -1,9 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using FinanceApp.Data;
+using FinanceApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<FinanceAppContext1>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FinanceAppContext1") ?? throw new InvalidOperationException("Connection string 'FinanceAppContext1' not found.")));
+builder.Services.AddDbContext<FinanceAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FinanceAppContext") ?? throw new InvalidOperationException("Connection string 'FinanceAppContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        SeedData.ClearDatabase(services);
+        SeedData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

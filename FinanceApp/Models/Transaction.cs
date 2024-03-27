@@ -1,4 +1,6 @@
-﻿namespace FinanceApp.Models;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace FinanceApp.Models;
 
 public class Transaction
 {
