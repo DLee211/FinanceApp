@@ -15,6 +15,7 @@ namespace FinanceApp.Data
         }
 
         public DbSet<FinanceApp.Models.Category> Category { get; set; } = default!;
+        public DbSet<FinanceApp.Models.Transaction> Transaction { get; set; } = default!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

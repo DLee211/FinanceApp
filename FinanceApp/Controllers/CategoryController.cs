@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FinanceApp.Data;
 using FinanceApp.Models;
 
-namespace FinanceApp.Views
+namespace FinanceApp.Controllers
 {
     public class CategoryController : Controller
     {

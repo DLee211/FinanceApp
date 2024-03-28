@@ -1,4 +1,5 @@
-﻿using FinanceApp.Data;
+﻿using System.Linq;
+using FinanceApp.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Models;
@@ -7,120 +8,68 @@ public static class SeedData
 {
     public static void Initialize(IServiceProvider serviceProvider)
     {
-        using var context = new FinanceAppContext(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<FinanceAppContext>>());
-        SeedCategories(context);
-
-        using var context1 = new FinanceAppContext1(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<FinanceAppContext1>>());
-        SeedTransactions(context1, serviceProvider);
-    }
-
-    private static void SeedCategories(FinanceAppContext context)
-    {
-        // Look for any categories.
-        if (context.Category.Any())
+        using (var context = new FinanceAppContext(
+                   serviceProvider.GetRequiredService<
+                       DbContextOptions<FinanceAppContext>>()))
         {
-            return;   // DB has been seeded
-        }
-
-        context.Category.AddRange(
-            new Category
+            // Look for any categories or transactions.
+            if (context.Category.Any() || context.Transaction.Any())
             {
-                Name = "Groceries"
-            },
-
-            new Category
-            {
-                Name = "Utilities"
+                return; // DB has been seeded
             }
-        );
 
-        context.SaveChanges();
+            context.Category.AddRange(
+                new Category
+                {
+                    Name = "Category1"
+                    // other properties
+                },
+
+                new Category
+                {
+                    Name = "Category2"
+                    // other properties
+                }
+            );
+
+            context.SaveChanges();
+            
+            var categories = context.Category.ToList();
+            
+            context.Transaction.AddRange(
+                new Transaction
+                {
+                    Name = "Transaction1",
+                    Value = 100.0m,
+                    Date = DateTime.Now,
+                    CategoryId = categories[0].Id // use the Id of the first added category
+                    // other properties
+                },
+                new Transaction
+                {
+                    Name = "Transaction2",
+                    Value = 200.0m,
+                    Date = DateTime.Now,
+                    CategoryId = categories[1].Id // use the Id of the second added category
+                    // other properties
+                }
+            );
+
+            context.SaveChanges();
+        }
     }
 
-    private static void SeedTransactions(FinanceAppContext1 context, IServiceProvider serviceProvider)
-    {
-        // Look for any transactions.
-        if (context.Transaction.Any())
-        {
-            return;   // DB has been seeded
-        }
-
-        using var context2 = new FinanceAppContext(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<FinanceAppContext>>());
-
-        var category1 = context2.Category.FirstOrDefault(c => c.Name == "Groceries");
-        var category2 = context2.Category.FirstOrDefault(c => c.Name == "Utilities");
-
-        if (category1 == null)
-        {
-            category1 = new Category { Name = "Groceries" };
-            context2.Category.Add(category1);
-            context2.SaveChanges();
-        }
-
-        if (category2 == null)
-        {
-            category2 = new Category { Name = "Utilities" };
-            context2.Category.Add(category2);
-            context2.SaveChanges();
-        }
-
-        context.Transaction.AddRange(
-            new Transaction
-            {
-                Date = DateTime.Now,
-                Value = 100.50m,
-                CategoryId = category1.Id,
-                Name = "Transaction 1"
-            },
-
-            new Transaction
-            {
-                Date = DateTime.Now.AddDays(-1),
-                Value = 200.75m,
-                CategoryId = category2.Id,
-                Name = "Transaction 2"
-            }
-        );
-
-        context.SaveChanges();
-    }
-    
     public static void ClearDatabase(IServiceProvider serviceProvider)
     {
-        using var context1 = new FinanceAppContext1(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<FinanceAppContext1>>());
-        ClearTransactions(context1);
-
-        using var context = new FinanceAppContext(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<FinanceAppContext>>());
-        ClearCategories(context);
-    }
-
-    private static void ClearTransactions(FinanceAppContext1 context)
-    {
-        foreach (var transaction in context.Transaction)
+        using (var context = new FinanceAppContext(
+                   serviceProvider.GetRequiredService<
+                       DbContextOptions<FinanceAppContext>>()))
         {
-            context.Transaction.Remove(transaction);
+            // Remove all categories and transactions.
+            context.Category.RemoveRange(context.Category);
+            context.Transaction.RemoveRange(context.Transaction);
+
+            context.SaveChanges();
         }
-
-        context.SaveChanges();
-    }
-
-    private static void ClearCategories(FinanceAppContext context)
-    {
-        foreach (var category in context.Category)
-        {
-            context.Category.Remove(category);
-        }
-
-        context.SaveChanges();
     }
 }

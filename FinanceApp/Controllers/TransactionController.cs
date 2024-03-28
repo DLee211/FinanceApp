@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using FinanceApp.Data;
 using FinanceApp.Models;
 
-namespace FinanceApp.Views
+namespace FinanceApp.Controllers
 {
     public class TransactionController : Controller
     {
-        private readonly FinanceAppContext1 _context;
+        private readonly FinanceAppContext _context;
 
-        public TransactionController(FinanceAppContext1 context)
+        public TransactionController(FinanceAppContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace FinanceApp.Views
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
-            var financeAppContext1 = _context.Transaction.Include(t => t.Category);
-            return View(await financeAppContext1.ToListAsync());
+            var financeAppContext = _context.Transaction.Include(t => t.Category);
+            return View(await financeAppContext.ToListAsync());
         }
 
         // GET: Transaction/Details/5
@@ -48,7 +48,7 @@ namespace FinanceApp.Views
         // GET: Transaction/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace FinanceApp.Views
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", transaction.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
             return View(transaction);
         }
 
@@ -82,7 +82,7 @@ namespace FinanceApp.Views
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", transaction.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
             return View(transaction);
         }
 
@@ -118,7 +118,7 @@ namespace FinanceApp.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", transaction.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
             return View(transaction);
         }
 

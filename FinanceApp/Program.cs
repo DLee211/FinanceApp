@@ -4,8 +4,6 @@ using FinanceApp.Data;
 using FinanceApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<FinanceAppContext1>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("FinanceAppContext1") ?? throw new InvalidOperationException("Connection string 'FinanceAppContext1' not found.")));
 builder.Services.AddDbContext<FinanceAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FinanceAppContext") ?? throw new InvalidOperationException("Connection string 'FinanceAppContext' not found.")));
 
