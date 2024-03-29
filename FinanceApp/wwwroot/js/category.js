@@ -1,4 +1,5 @@
-﻿document.addEventListener("DOMContentLoaded", function() {
+﻿//Create a new category
+document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("saveCategoryButton").addEventListener("click", function() {
         var categoryName = document.getElementById("categoryName").value;
 
@@ -33,7 +34,70 @@
     });
 });
 
+//Edit a category
+document.addEventListener("DOMContentLoaded", function() {
+    var editLinks = document.querySelectorAll('.edit-link');
 
+    editLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var categoryId = this.dataset.id;
+            var categoryName = this.parentElement.previousElementSibling.textContent.trim();
+
+            document.getElementById("categoryId").value = categoryId;
+            document.getElementById("categoryName").value = categoryName;
+
+            $('#editCategoryModal').modal('show');
+        });
+    });
+
+    document.getElementById("saveEditsCategoryButton").addEventListener("click", function() {
+        var categoryId = document.getElementById("categoryId").value;
+        var categoryName = document.getElementById("editCategoryName").value;
+
+        console.log("Button clicked. Category name: " + categoryName); // Debugging line
+
+        fetch('/Category/Edit/' + categoryId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({
+                Id: categoryId,
+                Name: categoryName,
+                Transactions: []
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                var contentType = response.headers.get("content-type");
+                if(contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    console.log("Oops, we haven't got JSON! Here's what we got instead: ");
+                    return response.text();
+                }
+            })
+            .then(data => {
+                console.log("Fetch request successful. Hiding the modal."); // Debugging line
+                $('#editCategoryModal').modal('hide');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+    
+    $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+    location.reload();
+    });
+});
+
+//Delete a category
 document.addEventListener("DOMContentLoaded", function() {
     var deleteLinks = document.querySelectorAll('.delete-link');
 
@@ -50,5 +114,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("confirmDeleteButton").addEventListener("click", function() {
         document.getElementById("deleteCategoryForm").submit();
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Event listeners for the "x" button and the "Close" button in the Edit modal
+    var editModalCloseButtons = document.querySelectorAll('#editCategoryModal .close, #editCategoryModal .btn-secondary');
+    editModalCloseButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            $('#editCategoryModal').modal('hide');
+        });
+    });
+
+    // Event listeners for the "x" button and the "Close" button in the Delete modal
+    var deleteModalCloseButtons = document.querySelectorAll('#deleteCategoryModal .close, #deleteCategoryModal .btn-secondary');
+    deleteModalCloseButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            $('#deleteCategoryModal').modal('hide');
+        });
     });
 });
