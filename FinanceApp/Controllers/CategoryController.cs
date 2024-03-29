@@ -50,19 +50,25 @@ namespace FinanceApp.Controllers
         }
 
         // POST: Category/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Create([FromBody] Category category)
         {
-            if (ModelState.IsValid)
+            
+            if (category.Transactions == null)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                category.Transactions = new List<Transaction>();
             }
-            return View(category);
+            
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.SelectMany(x => x.Value.Errors.Select(z => z.ErrorMessage));
+                return Json(new { success = false, errors });
+            }
+            
+            _context.Add(category);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
         }
 
         // GET: Category/Edit/5

@@ -20,8 +20,19 @@ namespace FinanceApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Transaction>()
-                .Property(b => b.Value)
-                .HasPrecision(18, 4); // or any precision and scale you need
+                .HasOne(t => t.Category)
+                .WithMany(c => c.Transactions)
+                .HasForeignKey(t => t.CategoryId)
+                .IsRequired(); // Transaction requires a Category
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Transactions)
+                .WithOne(t => t.Category)
+                .IsRequired(false); // Category does not require a Transaction
+
+            modelBuilder.Entity<Transaction>()
+                .Property(t => t.Value)
+                .HasPrecision(18, 4); // Specify precision and scale
 
             base.OnModelCreating(modelBuilder);
         }
