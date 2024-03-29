@@ -32,3 +32,23 @@
             });
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var deleteLinks = document.querySelectorAll('.delete-link');
+
+    deleteLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var deleteForm = document.getElementById("deleteCategoryForm");
+            deleteForm.action = '/Category/Delete/' + this.dataset.id;
+
+            $('#deleteCategoryModal').modal('show');
+        });
+    });
+
+    document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+        document.getElementById("deleteCategoryForm").submit();
+    });
+});

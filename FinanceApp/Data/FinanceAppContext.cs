@@ -28,7 +28,8 @@ namespace FinanceApp.Data
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.Transactions)
                 .WithOne(t => t.Category)
-                .IsRequired(false); // Category does not require a Transaction
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Value)
