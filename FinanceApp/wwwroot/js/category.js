@@ -3,6 +3,15 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("saveCategoryButton").addEventListener("click", function() {
         var categoryName = document.getElementById("categoryName").value;
 
+        if (!categoryName) {
+            alert("Name is required.");
+            return;
+        }
+        if (categoryName.length > 20) {
+            alert("Name cannot be longer than 20 characters.");
+            return;
+        }
+
         console.log("Button clicked. Category name: " + categoryName); // Debugging line
 
         fetch('/Category/Create', {
@@ -55,6 +64,15 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("saveEditsCategoryButton").addEventListener("click", function() {
         var categoryId = document.getElementById("categoryId").value;
         var categoryName = document.getElementById("editCategoryName").value;
+
+        if (!categoryName) {
+            alert("Name is required.");
+            return;
+        }
+        if (categoryName.length > 20) {
+            alert("Name cannot be longer than 20 characters.");
+            return;
+        }
 
         console.log("Button clicked. Category name: " + categoryName); // Debugging line
 
@@ -132,6 +150,50 @@ document.addEventListener("DOMContentLoaded", function() {
     deleteModalCloseButtons.forEach(function(button) {
         button.addEventListener("click", function() {
             $('#deleteCategoryModal').modal('hide');
+        });
+    });
+});
+
+//Details
+
+document.addEventListener("DOMContentLoaded", function() {
+    var detailsLinks = document.querySelectorAll('.details-link');
+
+    detailsLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var categoryId = this.dataset.id;
+
+            fetch('/Category/Details/' + categoryId)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data returned from server: ", data); // Debugging line
+                    // Format the data
+                    var formattedData = 'ID: ' + data.id + '\nName: ' + data.name;
+                    // Populate the modal with the formatted data
+                    document.getElementById("categoryDetails").textContent = formattedData;
+                    // Show the modal
+                    $('#detailsModal').modal('show');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Event listeners for the "x" button and the "Close" button in the Details modal
+    var detailsModalCloseButtons = document.querySelectorAll('#detailsModal .close, #detailsModal .btn-secondary');
+    detailsModalCloseButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            $('#detailsModal').modal('hide');
         });
     });
 });

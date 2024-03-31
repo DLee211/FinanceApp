@@ -40,7 +40,7 @@ namespace FinanceApp.Controllers
                 return NotFound();
             }
 
-            return View(category);
+            return Json(category);
         }
 
         // GET: Category/Create
