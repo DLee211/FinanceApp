@@ -1,4 +1,7 @@
 @model IEnumerable<FinanceApp.Models.Transaction>
+@section Scripts {
+    <script src="~/js/transaction.js"></script>
+}
 
 @{
     ViewData["Title"] = "Index";
@@ -8,8 +11,52 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal">
+        Create New Transaction
+   </button>
 </p>
+
+<!-- Add Transaction Modal -->
+<div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTransactionModalLabel">Add New Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createTransactionForm">
+                    <div class="form-group">
+                        <label for="transactionName">Name:</label>
+                        <input type="text" class="form-control" id="transactionName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionValue">Value:</label>
+                        <input type="number" class="form-control" id="transactionValue" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionDate">Date:</label>
+                        <input type="date" class="form-control" id="transactionDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionCategory">Category:</label>
+                        <select class="form-control" id="transactionCategory" required>
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" id="saveTransactionButton" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>

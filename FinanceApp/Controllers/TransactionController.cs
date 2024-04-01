@@ -22,6 +22,9 @@ namespace FinanceApp.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
+            var categories = await _context.Category.ToListAsync();
+            ViewBag.Categories = categories;
+
             var financeAppContext = _context.Transaction.Include(t => t.Category);
             return View(await financeAppContext.ToListAsync());
         }
@@ -63,10 +66,10 @@ namespace FinanceApp.Controllers
             {
                 _context.Add(transaction);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Json(new { success = true });
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
-            return View(transaction);
+            return Json(new { success = false, error = "Invalid model state" });
         }
 
         // GET: Transaction/Edit/5
