@@ -60,16 +60,19 @@ namespace FinanceApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Value,Date,CategoryId")] Transaction transaction)
+        public async Task<IActionResult> Create([FromBody][Bind("Id,Name,Value,Date,CategoryId,Category.Name")] Transaction transaction)
         {
-            if (ModelState.IsValid)
+            var category = await _context.Category.FindAsync(transaction.CategoryId);
+
+            if (category == null)
             {
+                return Json(new { success = false, error = "Invalid CategoryId" });
+            }
+            
+            transaction.Category = category;
                 _context.Add(transaction);
                 await _context.SaveChangesAsync();
                 return Json(new { success = true });
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
-            return Json(new { success = false, error = "Invalid model state" });
         }
 
         // GET: Transaction/Edit/5
