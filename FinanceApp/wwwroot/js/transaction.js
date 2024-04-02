@@ -1,4 +1,7 @@
-﻿document.addEventListener("DOMContentLoaded", function() {
+﻿document.addEventListener("DOMContentLoaded", function() { 
+    document.getElementById("saveTransactionButton").addEventListener("click", function() { event.preventDefault();
+    event.preventDefault();
+
         var transactionName = document.getElementById("transactionName").value;
         var transactionValue = document.getElementById("transactionValue").value;
         var transactionDate = document.getElementById("transactionDate").value;
@@ -31,6 +34,17 @@
                 }
                 if (transactionName.length > 20) {
                     alert("Name cannot be longer than 20 characters.");
+                    return;
+                }
+
+                if (transactionValue.value <= 0 || !transactionValue)
+                {
+                    alert("Value cannot be null and must be greater than 0");
+                    return;
+                }
+                if (!transactionDate)
+                {
+                    alert("Date is required");
                     return;
                 }
 
@@ -71,3 +85,4 @@
             $('#addTransactionModal').modal('hide');
         });
     });
+});

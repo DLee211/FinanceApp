@@ -68,11 +68,24 @@ namespace FinanceApp.Controllers
             {
                 return Json(new { success = false, error = "Invalid CategoryId" });
             }
+            if (string.IsNullOrEmpty(transaction.Name))
+            {
+                return Json(new { success = false, error = "Name is required" });
+            }
+            if (transaction.Value <= 0 || transaction.Value == null)
+            {
+                return Json(new { success = false, error = "Value must be greater than 0" });
+            }
+            if (transaction.Date == null)
+            {
+                return Json(new { success = false, error = "Date is required" });
+            }
             
             transaction.Category = category;
-                _context.Add(transaction);
-                await _context.SaveChangesAsync();
-                return Json(new { success = true });
+
+            _context.Add(transaction);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true });
         }
 
         // GET: Transaction/Edit/5
