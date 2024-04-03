@@ -36,6 +36,16 @@ public static class SeedData
                 new Category
                 {
                     Name = "Entertainment"
+                },
+                
+                new Category
+                {
+                    Name = "Transportation"
+                },
+
+                new Category
+                {
+                    Name = "Healthcare"
                 }
             );
 
@@ -71,6 +81,37 @@ public static class SeedData
                     Value = 30.0m,
                     Date = DateTime.Now,
                     CategoryId = categories[3].Id // use the Id of the Entertainment category
+                },
+                
+                new Transaction
+                {
+                    Name = "Bus fare",
+                    Value = 20.0m,
+                    Date = DateTime.Now,
+                    CategoryId = categories[4].Id // use the Id of the Transportation category
+                },
+                
+                new Transaction
+                {
+                    Name = "Doctor's appointment",
+                    Value = 200.0m,
+                    Date = DateTime.Now,
+                    CategoryId = categories[5].Id // use the Id of the Healthcare category
+                },
+                
+                new Transaction
+                {
+                    Name = "Gym membership",
+                    Value = 50.0m,
+                    Date = DateTime.Now,
+                    CategoryId = categories[3].Id // use the Id of the Entertainment category
+                },
+                new Transaction
+                {
+                    Name = "Gas bill",
+                    Value = 60.0m,
+                    Date = DateTime.Now,
+                    CategoryId = categories[2].Id // use the Id of the Utilities category
                 }
             );
 

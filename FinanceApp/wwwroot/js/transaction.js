@@ -114,3 +114,44 @@ deleteModalCloseButtons.forEach(function(button) {
         $('#deleteTransactionModal').modal('hide');
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    var detailsLinks = document.querySelectorAll('.details-link');
+
+    detailsLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var transactionId = this.dataset.id;
+
+            fetch('/Transaction/Details/' + transactionId)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data returned from server: ", data); // Debugging line
+                    // Format the data
+                    var formattedData = 'ID: ' + data.id + '<br><br>Name: ' + data.name + '<br><br>Value: ' + data.value + '<br><br>Date: ' + new Date(data.date).toLocaleString() + '<br><br>Category: ' + data.category.name;
+                    document.getElementById("transactionDetails").innerHTML = formattedData;
+                    // Show the modal
+                    $('#detailsModal').modal('show');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Event listeners for the "x" button and the "Close" button in the Details modal
+    var detailsModalCloseButtons = document.querySelectorAll('#detailsModal .close, #detailsModal .btn-secondary');
+    detailsModalCloseButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            $('#detailsModal').modal('hide');
+        });
+    });
+});

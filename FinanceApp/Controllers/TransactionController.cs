@@ -45,7 +45,7 @@ namespace FinanceApp.Controllers
                 return NotFound();
             }
 
-            return View(transaction);
+            return Json(transaction);
         }
 
         // GET: Transaction/Create
