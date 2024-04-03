@@ -86,3 +86,31 @@
         });
     });
 });
+
+//Delete a category
+document.addEventListener("DOMContentLoaded", function() {
+    var deleteLinks = document.querySelectorAll('.delete-link');
+
+    deleteLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var deleteForm = document.getElementById("deleteTransactionForm");
+            deleteForm.action = '/Transaction/Delete/' + this.dataset.id;
+
+            $('#deleteTransactionModal').modal('show');
+        });
+    });
+
+    document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+        document.getElementById("deleteTransactionForm").submit();
+    });
+});
+
+// Event listeners for the "x" button and the "Close" button in the Delete modal
+var deleteModalCloseButtons = document.querySelectorAll('#deleteTransactionModal .close, #deleteTransactionModal .btn-secondary');
+deleteModalCloseButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+        $('#deleteTransactionModal').modal('hide');
+    });
+});
