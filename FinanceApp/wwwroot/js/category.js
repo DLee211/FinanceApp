@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(data => {
                     console.log("Data returned from server: ", data); // Debugging line
                     // Format the data
-                    var formattedData = 'ID: ' + data.id + '\nName: ' + data.name;
+                    var formattedData = 'ID: ' + data.id + '<br><br>Name: ' + data.name;
                     // Populate the modal with the formatted data
-                    document.getElementById("categoryDetails").textContent = formattedData;
+                    document.getElementById("categoryDetails").innerHTML = formattedData;
                     // Show the modal
                     $('#detailsModal').modal('show');
                 })

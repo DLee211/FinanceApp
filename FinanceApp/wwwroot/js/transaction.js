@@ -115,6 +115,8 @@ deleteModalCloseButtons.forEach(function(button) {
     });
 });
 
+//Details
+
 document.addEventListener("DOMContentLoaded", function() {
     var detailsLinks = document.querySelectorAll('.details-link');
 

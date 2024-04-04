@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label for="transactionDate">Date:</label>
-                        <input type="date" class="form-control" id="transactionDate" required>
+                        <input type="datetime-local" class="form-control" id="transactionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="transactionCategory">Category:</label>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editTransactionDate">Date:</label>
-                        <input type="date" class="form-control" id="editTransactionDate" required>
+                        <input type="datetime-local" class="form-control" id="editTransactionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="editTransactionCategory">Category:</label>
@@ -175,7 +175,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Value)
+                $@Html.DisplayFor(modelItem => item.Value)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
