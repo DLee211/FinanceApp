@@ -110,35 +110,48 @@ namespace FinanceApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Value,Date,CategoryId")] Transaction transaction)
+        public async Task<IActionResult> Edit(int id, [FromBody][Bind("Id,Name,Value,Date,CategoryId")] Transaction transaction)
         {
             if (id != transaction.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Manual validation
+            if (string.IsNullOrEmpty(transaction.Name))
             {
-                try
-                {
-                    _context.Update(transaction);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TransactionExists(transaction.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Name is required.");
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
-            return View(transaction);
+            if (transaction.Value <= 0)
+            {
+                return BadRequest("Value must be greater than 0.");
+            }
+            if (transaction.Date == null)
+            {
+                return BadRequest("Date is required.");
+            }
+            if (transaction.CategoryId <= 0)
+            {
+                return BadRequest("Invalid CategoryId.");
+            }
+
+            try
+            {
+                _context.Update(transaction);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TransactionExists(transaction.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Json(new { success = true });
         }
 
         // GET: Transaction/Delete/5

@@ -87,7 +87,7 @@
     });
 });
 
-//Delete a category
+//Delete a Transaction
 document.addEventListener("DOMContentLoaded", function() {
     var deleteLinks = document.querySelectorAll('.delete-link');
 
@@ -146,12 +146,121 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+
+//Edit a transaction
+
+document.addEventListener("DOMContentLoaded", function() {
+    var editLinks = document.querySelectorAll('.edit-link');
+    
+
+    editLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+            // Get the transactionId from the data-id attribute of the clicked link
+            var transactionId = this.dataset.id;
+
+            // Set the transactionId in the hidden input field in the modal
+            document.getElementById('transactionId').value = transactionId;
+            $('#editTransactionModal').modal('show');
+        });
+    });
+
+    document.getElementById("saveEditsTransactionButton").addEventListener("click", function() {
+        var transactionId = document.getElementById("transactionId").value;
+        var transactionName = document.getElementById("editTransactionName").value;
+        var transactionValue = document.getElementById("editTransactionValue").value;
+        var transactionDate = document.getElementById("editTransactionDate").value;
+        var transactionCategory = document.getElementById("editTransactionCategory");
+        var transactionCategoryValue = transactionCategory.value;
+
+        fetch('/Category/Details/' + transactionCategoryValue)
+            .then(response => response.json())
+            .then(data => {
+                var transactionCategoryName = data.name;
+
+                var transaction = {
+                    Id: transactionId,
+                    Name: transactionName,
+                    Value: transactionValue,
+                    Date: transactionDate,
+                    CategoryId: transactionCategoryValue,
+                    Category: {
+                        Name: transactionCategoryName
+                    }
+                };
+
+
+                console.log("Transaction Id: ", transactionId);
+                console.log("Transaction Name: ", transactionName);
+                console.log("Transaction Value: ", transactionValue);
+                console.log("Transaction Date: ", transactionDate);
+                console.log("Transaction Category: ", transactionCategory);
+
+                if (!transactionName) {
+                    alert("Name is required.");
+                    return;
+                }
+                if (transactionName.length > 20) {
+                    alert("Name cannot be longer than 20 characters.");
+                    return;
+                }
+
+                if (transactionValue.value <= 0 || !transactionValue) {
+                    alert("Value cannot be null and must be greater than 0");
+                    return;
+                }
+                if (!transactionDate) {
+                    alert("Date is required");
+                    return;
+                }
+
+                fetch('/Transaction/Edit/' + transactionId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify(transaction)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+    $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+        location.reload();
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     // Event listeners for the "x" button and the "Close" button in the Details modal
     var detailsModalCloseButtons = document.querySelectorAll('#detailsModal .close, #detailsModal .btn-secondary');
     detailsModalCloseButtons.forEach(function(button) {
         button.addEventListener("click", function() {
             $('#detailsModal').modal('hide');
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Event listeners for the "x" button and the "Close" button in the Edit modal
+    var editModalCloseButtons = document.querySelectorAll('#editTransactionModal .close, #editTransactionModal .btn-secondary');
+    editModalCloseButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            $('#editTransactionModal').modal('hide');
         });
     });
 });
