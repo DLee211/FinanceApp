@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,12 +16,18 @@ namespace FinanceApp.Controllers
         }
 
         // GET: Transaction
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var categories = await _context.Category.ToListAsync();
             ViewBag.Categories = categories;
 
             var financeAppContext = _context.Transaction.Include(t => t.Category);
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                financeAppContext = financeAppContext.Where(t => t.Name.Contains(searchString));
+            }
+            
             return View(await financeAppContext.ToListAsync());
         }
 
