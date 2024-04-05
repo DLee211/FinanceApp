@@ -21,11 +21,11 @@ namespace FinanceApp.Controllers
             var categories = await _context.Category.ToListAsync();
             ViewBag.Categories = categories;
 
-            var financeAppContext = _context.Transaction.Include(t => t.Category);
-            
+            IQueryable<Transaction> financeAppContext = _context.Transaction.Include(t => t.Category);
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                financeAppContext = financeAppContext.Where(t => t.Name.Contains(searchString));
+                financeAppContext = financeAppContext.Where(t => t.Name.ToLower().Contains(searchString.ToLower()));
             }
             
             return View(await financeAppContext.ToListAsync());

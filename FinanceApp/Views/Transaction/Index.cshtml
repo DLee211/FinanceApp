@@ -11,10 +11,17 @@
 <h1>Index</h1>
 
 <p>
-   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal">
         Create New Transaction
-   </button>
+    </button>
 </p>
+
+<form asp-controller="Transaction" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 
 <!-- Add Transaction Modal -->
 <div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="addTransactionModalLabel" aria-hidden="true">

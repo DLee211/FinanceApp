@@ -58,59 +58,56 @@ public static class SeedData
                 {
                     Name = "Grocery shopping",
                     Value = 150.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-7), // 1 week ago
                     CategoryId = categories[0].Id // use the Id of the Groceries category
                 },
                 new Transaction
                 {
                     Name = "Monthly rent",
                     Value = 1200.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-14), // 2 weeks ago
                     CategoryId = categories[1].Id // use the Id of the Rent category
                 },
                 new Transaction
                 {
                     Name = "Electricity bill",
                     Value = 80.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-21), // 3 weeks ago
                     CategoryId = categories[2].Id // use the Id of the Utilities category
                 },
                 new Transaction
                 {
                     Name = "Movie tickets",
                     Value = 30.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-28), // 4 weeks ago
                     CategoryId = categories[3].Id // use the Id of the Entertainment category
                 },
-                
                 new Transaction
                 {
                     Name = "Bus fare",
                     Value = 20.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-35), // 5 weeks ago
                     CategoryId = categories[4].Id // use the Id of the Transportation category
                 },
-                
                 new Transaction
                 {
                     Name = "Doctor's appointment",
                     Value = 200.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-42), // 6 weeks ago
                     CategoryId = categories[5].Id // use the Id of the Healthcare category
                 },
-                
                 new Transaction
                 {
                     Name = "Gym membership",
                     Value = 50.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-49), // 7 weeks ago
                     CategoryId = categories[3].Id // use the Id of the Entertainment category
                 },
                 new Transaction
                 {
                     Name = "Gas bill",
                     Value = 60.0m,
-                    Date = DateTime.Now,
+                    Date = DateTime.Now.AddDays(-56), // 8 weeks ago
                     CategoryId = categories[2].Id // use the Id of the Utilities category
                 }
             );
