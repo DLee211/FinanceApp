@@ -19,6 +19,14 @@
 <form asp-controller="Transaction" asp-action="Index" method="get">
     <p>
         Title: <input type="text" name="SearchString" />
+        Date: <input type="date" name="searchDate" />
+         Category: 
+                <select name="searchCategory">
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Name">@category.Name</option>
+                    }
+                </select>
         <input type="submit" value="Filter" />
     </p>
 </form>
@@ -46,7 +54,7 @@
                     </div>
                     <div class="form-group">
                         <label for="transactionDate">Date:</label>
-                        <input type="datetime-local" class="form-control" id="transactionDate" required>
+                        <input type="date" class="form-control" id="transactionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="transactionCategory">Category:</label>
@@ -91,7 +99,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editTransactionDate">Date:</label>
-                        <input type="datetime-local" class="form-control" id="editTransactionDate" required>
+                        <input type="date" class="form-control" id="editTransactionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="editTransactionCategory">Category:</label>

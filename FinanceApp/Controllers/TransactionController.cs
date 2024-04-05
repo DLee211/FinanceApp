@@ -16,7 +16,7 @@ namespace FinanceApp.Controllers
         }
 
         // GET: Transaction
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, DateTime? searchDate, string searchCategory)
         {
             var categories = await _context.Category.ToListAsync();
             ViewBag.Categories = categories;
@@ -26,6 +26,16 @@ namespace FinanceApp.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 financeAppContext = financeAppContext.Where(t => t.Name.ToLower().Contains(searchString.ToLower()));
+            }
+            
+            if (searchDate.HasValue)
+            {
+                financeAppContext = financeAppContext.Where(t => t.Date.Date == searchDate.Value.Date);
+            }
+            
+            if (!String.IsNullOrEmpty(searchCategory))
+            {
+                financeAppContext = financeAppContext.Where(t => t.Category.Name.ToLower().Contains(searchCategory.ToLower()));
             }
             
             return View(await financeAppContext.ToListAsync());
