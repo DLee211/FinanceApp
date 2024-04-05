@@ -18,10 +18,15 @@ namespace FinanceApp.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index(string searchString, DateTime? searchDate, string searchCategory)
         {
+            
+            
             var categories = await _context.Category.ToListAsync();
             ViewBag.Categories = categories;
 
             IQueryable<Transaction> financeAppContext = _context.Transaction.Include(t => t.Category);
+            
+            var transactions = await financeAppContext.ToListAsync();
+            ViewBag.TotalValue = transactions.Sum(t => t.Value);
 
             if (!String.IsNullOrEmpty(searchString))
             {
