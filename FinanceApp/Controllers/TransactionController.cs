@@ -65,13 +65,6 @@ namespace FinanceApp.Controllers
             return Json(transaction);
         }
 
-        // GET: Transaction/Create
-        public IActionResult Create()
-        {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
-            return View();
-        }
-
         // POST: Transaction/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -103,23 +96,6 @@ namespace FinanceApp.Controllers
             _context.Add(transaction);
             await _context.SaveChangesAsync();
             return Json(new { success = true });
-        }
-
-        // GET: Transaction/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transaction = await _context.Transaction.FindAsync(id);
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", transaction.CategoryId);
-            return View(transaction);
         }
 
         // POST: Transaction/Edit/5
@@ -169,25 +145,6 @@ namespace FinanceApp.Controllers
                 }
             }
             return Json(new { success = true });
-        }
-
-        // GET: Transaction/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transaction = await _context.Transaction
-                .Include(t => t.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-
-            return View(transaction);
         }
 
         // POST: Transaction/Delete/5
