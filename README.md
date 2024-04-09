@@ -7,7 +7,7 @@ This budget app is designed to help you record and manage personal finance trans
 ## Requirements
 
 - **Database Structure:** The app uses two linked tables: Transaction and Category, establishing one-to-many relationships.
-- **Entity Framework:** Raw SQL is not allowed; all database operations should be done through Entity Framework.
+- **Entity Framework:** All database operations are done through Entity Framework.
 - **Search Functionality:** Users can search transactions by name.
 - **Filter Functionality:** Transactions can be filtered by category and date.
 - **Modals for CRUD Operations:** Insert, delete, and update operations for transactions and categories are performed within modals, without redirecting to separate pages.
