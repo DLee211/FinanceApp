@@ -13,12 +13,6 @@ This budget app is designed to help you record and manage personal finance trans
 - **Modals for CRUD Operations:** Insert, delete, and update operations for transactions and categories are performed within modals, without redirecting to separate pages.
 - **Data Validation:** The form prevents negative values and non-numeric inputs for transaction amounts using data annotations.
 
-## Resources
-
-- [Relationships in EF Core](link)
-- [One-To-Many Relationship in EF Core](link)
-- [One-To-Many Relationship in EF Core on Youtube](link)
-
 ## Usage
 
 1. **Installation:** Clone the repository to your local machine.
