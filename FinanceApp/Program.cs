@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FinanceAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FinanceAppContext") ?? throw new InvalidOperationException("Connection string 'FinanceAppContext' not found.")));
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
