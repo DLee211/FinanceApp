@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FinanceApp.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using IdentityDbContext = Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext;
 
 namespace FinanceApp.Data
 {
-    public class FinanceAppContext : DbContext
+    public class FinanceAppContext : IdentityDbContext
     {
         public FinanceAppContext (DbContextOptions<FinanceAppContext> options)
             : base(options)
@@ -23,7 +22,7 @@ namespace FinanceApp.Data
                 .HasOne(t => t.Category)
                 .WithMany(c => c.Transactions)
                 .HasForeignKey(t => t.CategoryId)
-                .IsRequired(); // Transaction requires a Category
+                .IsRequired(); 
 
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.Transactions)
@@ -33,7 +32,7 @@ namespace FinanceApp.Data
 
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Value)
-                .HasPrecision(18, 4); // Specify precision and scale
+                .HasPrecision(18, 4);
 
             base.OnModelCreating(modelBuilder);
         }
