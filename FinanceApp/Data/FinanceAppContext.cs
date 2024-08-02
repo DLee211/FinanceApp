@@ -6,18 +6,25 @@ using IdentityDbContext = Microsoft.AspNetCore.Identity.EntityFrameworkCore.Iden
 
 namespace FinanceApp.Data
 {
-    public class FinanceAppContext : IdentityDbContext
+    public class FinanceAppContext : IdentityDbContext<ApplicationUser>
     {
         public FinanceAppContext (DbContextOptions<FinanceAppContext> options)
             : base(options)
         {
         }
+        
+        
 
         public DbSet<FinanceApp.Models.Category> Category { get; set; } = default!;
         public DbSet<FinanceApp.Models.Transaction> Transaction { get; set; } = default!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(FinanceAppContext).Assembly);
+        
+            
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Category)
                 .WithMany(c => c.Transactions)
