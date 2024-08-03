@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceApp.Migrations
 {
     [DbContext(typeof(FinanceAppContext))]
-    [Migration("20240802230451_ApplicationUserREDO")]
-    partial class ApplicationUserREDO
+    [Migration("20240803184423_Authorize")]
+    partial class Authorize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,6 +174,25 @@ namespace FinanceApp.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "127c1e45-aed7-47a4-98da-8f23d9a80b1f",
+                            Name = "admin",
+                            NormalizedName = "client"
+                        },
+                        new
+                        {
+                            Id = "fa4cadc9-a94f-41cb-8c13-eeb631c88fa1",
+                            Name = "client"
+                        },
+                        new
+                        {
+                            Id = "b73e65f3-57d6-45bf-b04b-135950d1753e",
+                            Name = "seller",
+                            NormalizedName = "seller"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -175,18 +175,18 @@ namespace FinanceApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6fda3ca1-8df6-4d74-bc8a-a686831f3e1c",
+                            Id = "127c1e45-aed7-47a4-98da-8f23d9a80b1f",
                             Name = "admin",
                             NormalizedName = "client"
                         },
                         new
                         {
-                            Id = "6c723c89-e806-41bc-a3e8-6733342235c6",
+                            Id = "fa4cadc9-a94f-41cb-8c13-eeb631c88fa1",
                             Name = "client"
                         },
                         new
                         {
-                            Id = "6945a847-8733-4857-bf3d-a3b6f08aef1b",
+                            Id = "b73e65f3-57d6-45bf-b04b-135950d1753e",
                             Name = "seller",
                             NormalizedName = "seller"
                         });
