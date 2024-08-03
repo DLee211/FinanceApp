@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FinanceApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using IdentityDbContext = Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext;
 
@@ -13,14 +14,23 @@ namespace FinanceApp.Data
         {
         }
         
-        
-
         public DbSet<FinanceApp.Models.Category> Category { get; set; } = default!;
         public DbSet<FinanceApp.Models.Transaction> Transaction { get; set; } = default!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            var admin = new IdentityRole("admin");
+            admin.NormalizedName = "admin";
+            
+            var client = new IdentityRole("client");
+            admin.NormalizedName = "client";
+            
+            var seller = new IdentityRole("seller");
+            seller.NormalizedName = "seller";
+
+            modelBuilder.Entity<IdentityRole>().HasData(admin, client, seller);
             
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(FinanceAppContext).Assembly);
         

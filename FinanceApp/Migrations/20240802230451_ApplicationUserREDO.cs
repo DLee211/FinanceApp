@@ -11,34 +11,6 @@ namespace FinanceApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Check if the AspNetRoles table exists
-            bool tableExists;
-            using (var connection = new SqlConnection(migrationBuilder.ActiveProvider))
-            {
-                connection.Open();
-                using (var command = new SqlCommand("IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'AspNetRoles') SELECT CAST(1 AS BIT) ELSE SELECT CAST(0 AS BIT)", connection))
-                {
-                    tableExists = (bool)command.ExecuteScalar();
-                }
-            }
-            
-            if (!tableExists)
-            {
-                migrationBuilder.CreateTable(
-                    name: "AspNetRoles",
-                    columns: table => new
-                    {
-                        Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                        Name = table.Column<string>(type: "nvarchar(256)", nullable: true),
-                        NormalizedName = table.Column<string>(type: "nvarchar(256)", nullable: true),
-                        ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                    },
-                    constraints: table =>
-                    {
-                        table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                    });
-            }
-
             migrationBuilder.AddColumn<DateTime>(
                 name: "CreateAt",
                 table: "AspNetUsers",
