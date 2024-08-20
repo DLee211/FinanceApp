@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This budget app is designed to help you record and manage personal finance transactions. It utilizes web development technologies, including Entity Framework with SQL Server for database management and MVC for the overall structure.
+This budget app is designed to help you record and manage personal finance transactions. It utilizes web development technologies, including Entity Framework with SQL Server for database management and MVC for the overall structure. It also has a basic implementation of authentication for user access.
 
 ## Requirements
 
